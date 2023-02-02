@@ -1,0 +1,93 @@
+{
+  "env": {
+    "es2021": true,
+    "node": true
+  },
+  "extends": [
+    "airbnb-base",
+    "plugin:@typescript-eslint/recommended",
+    "plugin:prettier/recommended"
+  ],
+  "globals": {
+    "Atomics": "readonly",
+    "SharedArrayBuffer": "readonly"
+  },
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "ecmaVersion": 12,
+    "sourceType": "module"
+  },
+  "plugins": [
+    "@typescript-eslint",
+    "prettier",
+    "import",
+    "eslint-plugin-import-helpers"
+  ],
+  "rules": {
+    "consistent-return": "off",
+    "import/no-duplicates": "off",
+    "no-shadow": "off",
+    "no-restricted-syntax": "off",
+    "no-await-in-loop": "off",
+    "import/no-extraneous-dependencies": "off",
+    "@typescript-eslint/no-shadow": ["error"],
+    "@typescript-eslint/no-non-null-assertion": "off",
+    "no-nested-ternary": "off",
+    "import/no-cycle": "off",
+    "no-continue": "off",
+    "no-unused-expressions": "off",
+    "class-methods-use-this": "off",
+    "new-cap": "off",
+    "@typescript-eslint/no-unused-vars": [
+      "warn",
+      { "argsIgnorePattern": "^_" }
+    ],
+    "@typescript-eslint/no-explicit-any": "off",
+    "no-useless-constructor": "off",
+    "@typescript-eslint/explicit-function-return-type": [
+      "error",
+      {
+        "allowExpressions": true
+      }
+    ],
+    "import/prefer-default-export": "off",
+    "no-useless-return": "off",
+    "import/extensions": [
+      "error",
+      "ignorePackages",
+      {
+        "ts": "never",
+        "tsx": "never",
+        "js": "never",
+        "jsx": "never"
+      }
+    ],
+    "no-return-await": "off",
+    "camelcase": "off",
+    "no-underscore-dangle": "off",
+    "import-helpers/order-imports": [
+      "warn",
+      {
+        "newlinesBetween": "always",
+        "groups": [
+          "/^@nest/",
+          "module",
+          "/^~/",
+          ["parent", "sibling"],
+          "index"
+        ],
+        "alphabetize": { "order": "desc", "ignoreCase": true }
+      }
+    ],
+    "prettier/prettier": "error",
+    "react/jsx-wrap-multilines": "off",
+    "react/jsx-curly-newline": "off",
+    "dot-notation": "off",
+    "no-plusplus": "off"
+  },
+  "settings": {
+    "import/resolver": {
+      "typescript": {}
+    }
+  }
+}
