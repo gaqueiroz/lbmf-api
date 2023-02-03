@@ -1,11 +1,10 @@
-import { ApiExcludeEndpoint } from '@nestjs/swagger';
-import { Controller, Get, Redirect } from '@nestjs/common';
+import { Controller } from '@nestjs/common';
+
+import { GetRoute } from './shared/decorators/get-route.decorator';
 
 @Controller()
 export class AppController {
-  @Get('/')
-  @ApiExcludeEndpoint()
-  @Redirect('/docs')
+  @GetRoute({ path: '/', redirect: '/docs', excludeEndpoint: true })
   public async docs(): Promise<void> {
     return;
   }

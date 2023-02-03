@@ -251,7 +251,7 @@ export const theme: ThemeInterface = {
     linesColor: (_theme) =>
       lighten(
         _theme.colors.tonalOffset,
-        desaturate(_theme.colors.tonalOffset, _theme.colors.primary.main),
+        desaturate(_theme.colors.tonalOffset, _theme.colors.primary.main)
       ),
     defaultDetailsWidth: '75%',
     typeNameColor: (_theme) => _theme.colors.text.secondary,
@@ -345,7 +345,7 @@ export function resolveTheme(_theme: ThemeInterface): ResolvedThemeInterface {
               counter++;
               if (counter > 1000) {
                 throw new Error(
-                  `Theme probably contains circular dependency at ${currentPath}: ${val.toString()}`,
+                  `Theme probably contains circular dependency at ${currentPath}: ${val.toString()}`
                 );
               }
 

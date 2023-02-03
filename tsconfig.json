@@ -12,7 +12,7 @@
     "baseUrl": "./",
     "resolveJsonModule": true,
     "paths": {
-      "~/": ["src/"]
+      "~/*": ["src/*"]
     },
     "incremental": true,
     "skipLibCheck": true,

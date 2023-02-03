@@ -1,11 +1,11 @@
-import * as dotenv from 'dotenv';
-
-dotenv.config();
-
 import { NestFactory } from '@nestjs/core';
+
+import * as dotenv from 'dotenv';
 
 import { DocsModule } from './docs/docs.module';
 import { AppModule } from './app.module';
+
+dotenv.config();
 
 (async () => {
   const app = await NestFactory.create(AppModule, { cors: true });
@@ -14,6 +14,5 @@ import { AppModule } from './app.module';
 
   await docsModule.setup(app);
 
-  console.log(process.env.PORT, process.env.HOST);
   await app.listen(process.env.PORT, process.env.HOST);
 })();
