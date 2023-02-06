@@ -4,51 +4,51 @@ export class CreateUserRequestDTO {
   @ApiProperty({ description: 'ID da categoria' })
   CategoryId: number;
 
-  @ApiProperty({ description: '' })
+  @ApiProperty({ description: 'Username' })
   Username: string;
 
-  @ApiProperty({ description: '' })
+  @ApiProperty({ description: 'Nome' })
   Name: string;
 
-  @ApiProperty({ description: '' })
+  @ApiProperty({ description: 'Telefone' })
   Phone: string;
 
-  @ApiPropertyOptional({ description: '' })
+  @ApiPropertyOptional({ description: 'Email' })
   Email?: string;
 
-  @ApiPropertyOptional({ description: '' })
+  @ApiPropertyOptional({ description: 'Chave de autenticação do Facebook' })
   FacebookKey?: string;
 
-  @ApiPropertyOptional({ description: '' })
+  @ApiPropertyOptional({ description: 'Chave de autenticação do Google' })
   GoogleKey?: string;
 
-  @ApiProperty({ description: '' })
+  @ApiProperty({ description: 'Senha' })
   Password: string;
 
-  @ApiPropertyOptional({ description: '' })
+  @ApiPropertyOptional({ description: 'Bio' })
   Bio?: string;
 
-  @ApiPropertyOptional({ description: '' })
+  @ApiPropertyOptional({ description: 'URL Foto de perfil' })
   ImageUrl?: string;
 
-  @ApiPropertyOptional({ description: '' })
+  @ApiPropertyOptional({ description: 'URL do perfil professional' })
   ProfessionalUrl?: string;
 
-  @ApiPropertyOptional({ description: '' })
+  @ApiPropertyOptional({ description: 'Instagram' })
   Instagram?: string;
 
-  @ApiPropertyOptional({ description: '' })
+  @ApiPropertyOptional({ description: 'Seguidores' })
   Followers?: number;
 
-  @ApiPropertyOptional({ description: '' })
+  @ApiPropertyOptional({ description: 'Seguindo' })
   Followings?: number;
 
-  @ApiPropertyOptional({ description: '' })
+  @ApiPropertyOptional({ description: 'É valido' })
   IsValid?: boolean;
 
-  @ApiPropertyOptional({ description: '' })
+  @ApiPropertyOptional({ description: 'Data de nascimento' })
   Birthdate?: Date;
 
-  @ApiPropertyOptional({ description: '' })
+  @ApiPropertyOptional({ description: 'Autenticação de 2 fatores' })
   TwofaType?: number;
 }

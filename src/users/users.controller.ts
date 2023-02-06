@@ -1,5 +1,10 @@
-import { Body } from '@nestjs/common';
+import { JwtService } from '@nestjs/jwt';
+import { Body, Param, Headers, HttpStatus } from '@nestjs/common';
 
+import { verifyJWT } from '~/shared/utils/verfiy-jwt.util';
+import { IdRequestParams } from '~/shared/params/id-request.params';
+import { AppError } from '~/shared/errors/app.error';
+import { ShowRoute } from '~/shared/decorators/show-route.decorator';
 import { PutRoute } from '~/shared/decorators/put-route.decorator';
 import { PostRoute } from '~/shared/decorators/post-route.decorator';
 import { GetRoute } from '~/shared/decorators/get-route.decorator';
@@ -13,7 +18,10 @@ import { CreateUserRequestDTO } from './dtos/create-user-request.dto';
 
 @Controller(USERS_ROUTE, USERS_DOC_TITLE)
 export class UsersController {
-  constructor(private readonly usersService: UsersService) {}
+  constructor(
+    private readonly usersService: UsersService,
+    private readonly jwtService: JwtService
+  ) {}
 
   @GetRoute({ type: [User] })
   public async index(): Promise<User[]> {
@@ -28,5 +36,24 @@ export class UsersController {
   @PutRoute({ type: User })
   public async update(@Body() body: UpdateUserRequestDTO): Promise<User> {
     return await this.usersService.update(body);
+  }
+
+  @ShowRoute({ type: User })
+  public async show(
+    @Param() params: IdRequestParams,
+    @Headers('authorization') bearerToken: string
+  ): Promise<User> {
+    const decodedToken = await verifyJWT(bearerToken, this.jwtService);
+
+    const user = await this.usersService.findById(params.id);
+
+    if (user.Id !== decodedToken.userId) {
+      throw new AppError(HttpStatus.FORBIDDEN, {
+        message: "You don't have access to this user.",
+        displayMessage: 'Você não tem acesso a esse usuário.',
+      });
+    }
+
+    return user;
   }
 }

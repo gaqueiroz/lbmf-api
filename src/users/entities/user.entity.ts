@@ -32,7 +32,7 @@ export class User extends BaseModel {
   @Column({ description: '', length: 500, nullable: true })
   GoogleKey?: string;
 
-  @Column({ description: '', length: 20 })
+  @Column({ description: '', length: 60 })
   Password: string;
 
   @Column({ description: '', length: 400, nullable: true })
@@ -64,4 +64,10 @@ export class User extends BaseModel {
 
   @Column({ description: '', nullable: true })
   TwofaType?: number;
+
+  @Column()
+  PasswordRecoveryCode: string;
+
+  @Column()
+  PasswordRecoveryExpirationDate: Date;
 }
