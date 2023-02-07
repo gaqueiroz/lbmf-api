@@ -12,6 +12,7 @@ import { AppError } from '~/shared/errors/app.error';
 import { generateExpirationDate } from './utils/generate-expiration-time.util';
 import { Token } from './token.entity';
 import { TokenRequestDTO } from './dtos/token-request.dto';
+import { RefreshTokenRequestDTO } from './dtos/refresh-token-request.dto';
 
 @Injectable()
 export class TokensService {
@@ -67,19 +68,19 @@ export class TokensService {
 
     const refreshToken = crypto.randomBytes(20).toString('hex');
 
-    const createdToken = await this.tokenRepository.create({
+    const createdToken = await this.tokenRepository.save({
       AccessToken: accessToken,
       RefreshToken: refreshToken,
       UserId: userId,
       ExpiresAt: expiresAt,
-    });
+    } as Token);
 
     return createdToken;
   }
 
-  public async refresh(refreshToken: string): Promise<Token> {
+  public async refresh(data: RefreshTokenRequestDTO): Promise<Token> {
     const findToken = await this.tokenRepository.findOneBy({
-      RefreshToken: refreshToken,
+      RefreshToken: data.refreshToken,
     });
 
     if (!findToken) {
@@ -88,6 +89,8 @@ export class TokensService {
         tag: 'TOKEN_NOT_FOUND',
       });
     }
+
+    await this.usersService.createLoginHistory(findToken.UserId, data);
 
     return await this.save({ userId: findToken.UserId });
   }

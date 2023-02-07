@@ -135,6 +135,8 @@ export class AuthService {
 
     const token = await this.tokensService.save({ userId: user.Id });
 
+    await this.usersService.createLoginHistory(user.Id, data);
+
     return {
       user,
       accessToken: token.AccessToken,
@@ -170,6 +172,6 @@ export class AuthService {
   }
 
   public async refreshToken(data: RefreshTokenRequestDTO): Promise<Token> {
-    return await this.tokensService.refresh(data.refreshToken);
+    return await this.tokensService.refresh(data);
   }
 }

@@ -7,18 +7,18 @@ import { USER_LOGINS_TABLE } from '../users.constants';
 
 @Entity({ name: USER_LOGINS_TABLE })
 export class UserLogin extends BaseModel {
-  @Column({ description: '' })
+  @Column({ description: 'ID do usuário' })
   UserId: number;
 
-  @Column({ description: '' })
+  @Column({ description: 'Data de criação' })
   Date: Date;
 
-  @Column({ description: '', length: 50 })
+  @Column({ description: 'Localização', length: 50 })
   Location: string;
 
-  @Column({ description: '', length: 20 })
+  @Column({ description: 'IP', length: 20 })
   Ip: string;
 
-  @Column({ description: '', length: 30 })
+  @Column({ description: 'Dispositivo', length: 30 })
   DeviceDescription: string;
 }

@@ -6,7 +6,7 @@ import { Column } from '~/shared/decorators/column.decorator';
 import { USER_SETTINGS_TABLE } from '../users.constants';
 
 @Entity({ name: USER_SETTINGS_TABLE })
-export class UserSettings extends BaseModel {
+export class UserSetting extends BaseModel {
   @Column()
   UserId: number;
 
@@ -14,32 +14,32 @@ export class UserSettings extends BaseModel {
   Language: string;
 
   @Column()
-  ProfilePrivacy: number;
+  ProfilePrivacy: boolean;
 
   @Column()
-  CommentsPrivacy: number;
+  CommentsPrivacy: boolean;
 
   @Column()
-  MentionsPrivacy: number;
+  MentionsPrivacy: boolean;
 
   @Column()
-  TempsPrivacy: number;
+  TempsPrivacy: boolean;
 
   @Column()
-  MessagesPrivacy: number;
+  MessagesPrivacy: boolean;
 
-  @Column({ length: 50 })
-  GeolocationPrivacy: string;
+  @Column()
+  GeolocationPrivacy: boolean;
 
   @Column()
   GeolocationRadius: string;
 
   @Column()
-  CommentsNotification: number;
+  CommentsNotification: boolean;
 
   @Column()
-  LikesNotification: number;
+  LikesNotification: boolean;
 
   @Column()
-  MessagesNotification: number;
+  MessagesNotification: boolean;
 }

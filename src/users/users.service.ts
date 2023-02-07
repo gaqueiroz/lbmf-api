@@ -7,8 +7,14 @@ import { isBefore } from 'date-fns';
 import * as bcrypt from 'bcrypt';
 
 import { AppError } from '~/shared/errors/app.error';
+import { SignInUserLoginRequestDTO } from '~/auth/dtos/signin-user-login-request.dto';
+import { SignInRequestDTO } from '~/auth/dtos/signin-request.dto';
 
+import { UsersCategory } from './entities/users-category.entity';
 import { User } from './entities/user.entity';
+import { UserSetting } from './entities/user-settings.entity';
+import { UserLogin } from './entities/user-login.entity';
+import { UserDevice } from './entities/user-device.entity';
 import { UpdateUserRequestDTO } from './dtos/update-user-request.dto';
 import { ResetUserPasswordRequestDTO } from './dtos/reset-user-password-request.dto';
 import { CreateUserRequestDTO } from './dtos/create-user-request.dto';
@@ -17,7 +23,15 @@ import { CreateUserRequestDTO } from './dtos/create-user-request.dto';
 export class UsersService {
   constructor(
     @InjectRepository(User)
-    private readonly userRepository: Repository<User>
+    private readonly userRepository: Repository<User>,
+    @InjectRepository(UserLogin)
+    private readonly userLoginRepository: Repository<UserLogin>,
+    @InjectRepository(UserDevice)
+    private readonly userDeviceRepository: Repository<UserDevice>,
+    @InjectRepository(UserSetting)
+    private readonly userSettingRepository: Repository<UserSetting>,
+    @InjectRepository(UsersCategory)
+    private readonly userCategoryRepository: Repository<UsersCategory>
   ) {}
 
   public async findById(id: number): Promise<User> {
@@ -29,6 +43,8 @@ export class UsersService {
   }
 
   public async findAll(): Promise<User[]> {
+    // const histories = await this.userLoginRepository.find();
+
     return await this.userRepository.find();
   }
 
@@ -36,15 +52,29 @@ export class UsersService {
     const salt = bcrypt.genSaltSync(10);
     const hash = bcrypt.hashSync(data.Password, salt);
 
-    console.log(hash.length);
-    console.log(data);
-
-    return this.userRepository.save({
+    const user = await this.userRepository.save({
       ...data,
       Key: uuid.v4(),
       Password: hash,
       CreateDate: new Date(),
     });
+
+    const setting = await this.userSettingRepository.save({
+      Language: 'pt-br',
+      CommentsNotification: true,
+      CommentsPrivacy: true,
+      GeolocationPrivacy: true,
+      GeolocationRadius: '',
+      LikesNotification: true,
+      MentionsPrivacy: true,
+      MessagesNotification: true,
+      MessagesPrivacy: true,
+      ProfilePrivacy: true,
+      TempsPrivacy: true,
+      UserId: user.Id,
+    } as UserSetting);
+
+    return user;
   }
 
   public async update(data: UpdateUserRequestDTO): Promise<User> {
@@ -83,5 +113,18 @@ export class UsersService {
     const hash = bcrypt.hashSync(data.newPassword, salt);
 
     await this.userRepository.update({ Id: findUser.Id }, { Password: hash });
+  }
+
+  public async createLoginHistory(
+    userId: number,
+    loginHistory: SignInUserLoginRequestDTO
+  ): Promise<void> {
+    await this.userLoginRepository.save({
+      Date: new Date(),
+      DeviceDescription: loginHistory.device,
+      Ip: loginHistory.ip,
+      Location: loginHistory.location,
+      UserId: userId,
+    });
   }
 }

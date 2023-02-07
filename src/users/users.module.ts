@@ -7,7 +7,7 @@ import { UsersService } from './users.service';
 import { UsersController } from './users.controller';
 import { UsersCategory } from './entities/users-category.entity';
 import { User } from './entities/user.entity';
-import { UserSettings } from './entities/user-settings.entity';
+import { UserSetting } from './entities/user-settings.entity';
 import { UserLogin } from './entities/user-login.entity';
 import { UserDevice } from './entities/user-device.entity';
 
@@ -18,7 +18,7 @@ import { UserDevice } from './entities/user-device.entity';
       User,
       UsersCategory,
       UserDevice,
-      UserSettings,
+      UserSetting,
       UserLogin,
     ]),
   ],

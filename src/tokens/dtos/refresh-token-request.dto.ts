@@ -1,6 +1,8 @@
 import { ApiProperty } from '@nestjs/swagger';
 
-export class RefreshTokenRequestDTO {
+import { SignInUserLoginRequestDTO } from '~/auth/dtos/signin-user-login-request.dto';
+
+export class RefreshTokenRequestDTO extends SignInUserLoginRequestDTO {
   @ApiProperty({ description: 'Chave de atualização' })
   refreshToken: string;
 }
