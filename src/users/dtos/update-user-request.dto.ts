@@ -4,51 +4,59 @@ export class UpdateUserRequestDTO {
   @ApiPropertyOptional({ description: 'ID da categoria' })
   CategoryId?: number;
 
-  @ApiPropertyOptional({ description: '' })
+  @ApiPropertyOptional({ description: 'Username' })
   Username?: string;
 
-  @ApiPropertyOptional({ description: '' })
+  @ApiPropertyOptional({ description: 'Nome' })
   Name?: string;
 
-  @ApiPropertyOptional({ description: '' })
+  @ApiPropertyOptional({ description: 'Telefone' })
   Phone?: string;
 
-  @ApiPropertyOptional({ description: '' })
+  @ApiPropertyOptional({ description: 'Email' })
   Email?: string;
 
-  @ApiPropertyOptional({ description: '' })
+  @ApiPropertyOptional({ description: 'Chavbe ' })
   FacebookKey?: string;
 
-  @ApiPropertyOptional({ description: '' })
+  @ApiPropertyOptional({ description: 'Chave do Google' })
   GoogleKey?: string;
 
-  @ApiPropertyOptional({ description: '' })
-  Password?: string;
+  @ApiPropertyOptional({ description: 'Senha' })
+  Password: string;
 
-  @ApiPropertyOptional({ description: '' })
+  @ApiPropertyOptional({ description: 'Bio' })
   Bio?: string;
 
-  @ApiPropertyOptional({ description: '' })
+  @ApiPropertyOptional({ description: 'URL de foto de perfil' })
   ImageUrl?: string;
 
-  @ApiPropertyOptional({ description: '' })
+  @ApiPropertyOptional({
+    description: 'URL do perfil professional',
+  })
   ProfessionalUrl?: string;
 
-  @ApiPropertyOptional({ description: '' })
+  @ApiPropertyOptional({ description: 'Instagram' })
   Instagram?: string;
 
-  @ApiPropertyOptional({ description: '' })
+  @ApiPropertyOptional({ description: 'Seguidores', nullable: true })
   Followers?: number;
 
-  @ApiPropertyOptional({ description: '' })
+  @ApiPropertyOptional({ description: 'Seguindo', nullable: true })
   Followings?: number;
 
-  @ApiPropertyOptional({ description: '' })
+  @ApiPropertyOptional({ description: 'É válido', nullable: true })
   IsValid?: boolean;
 
-  @ApiPropertyOptional({ description: '' })
+  @ApiPropertyOptional({ description: 'Data de criação' })
+  CreateDate?: Date;
+
+  @ApiPropertyOptional({ description: 'Data de nascimento', nullable: true })
   Birthdate?: Date;
 
-  @ApiPropertyOptional({ description: '' })
+  @ApiPropertyOptional({
+    description: 'Autenticação em 2 fatores',
+    nullable: true,
+  })
   TwofaType?: number;
 }

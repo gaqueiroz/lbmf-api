@@ -137,8 +137,11 @@ export class AuthService {
 
     await this.usersService.createLoginHistory(user.Id, data);
 
+    const userSettings = await this.usersService.findSettingsByUserId(user.Key);
+
     return {
       user,
+      userSettings,
       accessToken: token.AccessToken,
       refreshToken: token.RefreshToken,
     };

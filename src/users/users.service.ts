@@ -8,13 +8,13 @@ import * as bcrypt from 'bcrypt';
 
 import { AppError } from '~/shared/errors/app.error';
 import { SignInUserLoginRequestDTO } from '~/auth/dtos/signin-user-login-request.dto';
-import { SignInRequestDTO } from '~/auth/dtos/signin-request.dto';
 
 import { UsersCategory } from './entities/users-category.entity';
 import { User } from './entities/user.entity';
 import { UserSetting } from './entities/user-settings.entity';
 import { UserLogin } from './entities/user-login.entity';
 import { UserDevice } from './entities/user-device.entity';
+import { UpdateUserSetttingsRequestDTO } from './dtos/update-user-settings-request.dto';
 import { UpdateUserRequestDTO } from './dtos/update-user-request.dto';
 import { ResetUserPasswordRequestDTO } from './dtos/reset-user-password-request.dto';
 import { CreateUserRequestDTO } from './dtos/create-user-request.dto';
@@ -43,8 +43,6 @@ export class UsersService {
   }
 
   public async findAll(): Promise<User[]> {
-    // const histories = await this.userLoginRepository.find();
-
     return await this.userRepository.find();
   }
 
@@ -59,7 +57,7 @@ export class UsersService {
       CreateDate: new Date(),
     });
 
-    const setting = await this.userSettingRepository.save({
+    await this.userSettingRepository.save({
       Language: 'pt-br',
       CommentsNotification: true,
       CommentsPrivacy: true,
@@ -77,8 +75,56 @@ export class UsersService {
     return user;
   }
 
-  public async update(data: UpdateUserRequestDTO): Promise<User> {
-    return;
+  public async update(
+    userId: number,
+    userKey: string,
+    data: UpdateUserRequestDTO
+  ): Promise<User> {
+    await this.validateUser(userId, userKey);
+
+    await this.userRepository.update({ Key: userKey }, { ...data });
+
+    const updatedUser = await this.userRepository.findOneBy({
+      Id: userId,
+    });
+
+    return updatedUser;
+  }
+
+  public async updateSettings(
+    userId: number,
+    userKey: string,
+    data: UpdateUserSetttingsRequestDTO
+  ): Promise<UserSetting> {
+    await this.validateUser(userId, userKey);
+
+    await this.userSettingRepository.update(
+      { UserId: userId },
+      {
+        ...data,
+      }
+    );
+
+    const user = await this.findById(userId);
+
+    const updatedUserSettings = await this.findSettingsByUserId(user.Key);
+
+    return updatedUserSettings;
+  }
+
+  public async findSettingsByUserId(
+    userKey: string,
+    userId?: number | undefined
+  ): Promise<UserSetting> {
+    if (userId) {
+      await this.validateUser(userId, userKey);
+    }
+
+    const userSettings = await this.userSettingRepository.findOneBy({
+      UserId: userId,
+    });
+
+    return userSettings;
   }
 
   public async delete(id: number): Promise<void> {
@@ -126,5 +172,16 @@ export class UsersService {
       Location: loginHistory.location,
       UserId: userId,
     });
+  }
+
+  private async validateUser(userId: number, userKey: string): Promise<void> {
+    const user = await this.findById(userId);
+
+    if (user.Key !== userKey) {
+      throw new AppError(HttpStatus.BAD_REQUEST, {
+        message: 'User does not belong to your account.',
+        displayMessage: 'Submit your user ID in the request to change.',
+      });
+    }
   }
 }

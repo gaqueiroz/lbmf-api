@@ -13,21 +13,21 @@ export class UserDevice extends BaseModel {
   @Column({ default: uuid.v4, length: 50, description: 'Chave' })
   Key: string;
 
-  @Column({ description: '' })
+  @Column({ description: 'ID do usuário' })
   UserId: number;
 
-  @Column({ description: '', length: 50 })
+  @Column({ description: 'Nome', length: 50 })
   Name: string;
 
-  @Column({ description: '', length: 20 })
+  @Column({ description: 'Tipo', length: 20 })
   Type: string;
 
-  @Column({ description: '', length: 20 })
+  @Column({ description: 'Modelo', length: 20 })
   Model: string;
 
-  @Column({ description: '', length: 50 })
+  @Column({ description: 'Localização', length: 50 })
   Location: string;
 
-  @Column({ description: '' })
+  @Column({ description: 'Data de criação' })
   CreateDate: Date;
 }

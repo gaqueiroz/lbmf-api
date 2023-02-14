@@ -9,10 +9,14 @@ import { PutRoute } from '~/shared/decorators/put-route.decorator';
 import { PostRoute } from '~/shared/decorators/post-route.decorator';
 import { GetRoute } from '~/shared/decorators/get-route.decorator';
 import { Controller } from '~/shared/decorators/controller.decorator';
+import { PrivateRoute } from '~/auth/decorators/private-route.decorator';
 
 import { UsersService } from './users.service';
 import { USERS_DOC_TITLE, USERS_ROUTE } from './users.constants';
-import { User } from './entities/user.entity';
+import { KeyRequestParams } from './params/key-request.params';
+import { User as UserEntity } from './entities/user.entity';
+import { UserSetting } from './entities/user-settings.entity';
+import { UpdateUserSetttingsRequestDTO } from './dtos/update-user-settings-request.dto';
 import { UpdateUserRequestDTO } from './dtos/update-user-request.dto';
 import { CreateUserRequestDTO } from './dtos/create-user-request.dto';
 
@@ -23,26 +27,60 @@ export class UsersController {
     private readonly jwtService: JwtService
   ) {}
 
-  @GetRoute({ type: [User] })
-  public async index(): Promise<User[]> {
+  @PrivateRoute()
+  @GetRoute({ type: [UserEntity] })
+  public async index(): Promise<UserEntity[]> {
     return await this.usersService.findAll();
   }
 
-  @PostRoute({ type: User })
-  public async store(@Body() body: CreateUserRequestDTO): Promise<User> {
+  @PrivateRoute()
+  @PostRoute({ type: UserEntity })
+  public async store(@Body() body: CreateUserRequestDTO): Promise<UserEntity> {
     return await this.usersService.create(body);
   }
 
-  @PutRoute({ type: User })
-  public async update(@Body() body: UpdateUserRequestDTO): Promise<User> {
-    return await this.usersService.update(body);
+  @PrivateRoute()
+  @PutRoute({ path: '/key/:key', type: UserEntity })
+  public async update(
+    @Param() params: KeyRequestParams,
+    @Body() body: UpdateUserRequestDTO,
+    @Headers('authorization') bearerToken: string
+  ): Promise<UserEntity> {
+    const decodedToken = await verifyJWT(bearerToken, this.jwtService);
+
+    return await this.usersService.update(
+      decodedToken.userId,
+      params.key,
+      body
+    );
   }
 
-  @ShowRoute({ type: User })
+  @PrivateRoute()
+  @PutRoute({
+    type: UserSetting,
+    path: '/key/:key/settings',
+    summary: 'Alterar configurações do usuário',
+  })
+  public async updateSettings(
+    @Param() params: KeyRequestParams,
+    @Body() body: UpdateUserSetttingsRequestDTO,
+    @Headers('authorization') bearerToken: string
+  ): Promise<UserSetting> {
+    const decodedToken = await verifyJWT(bearerToken, this.jwtService);
+
+    return await this.usersService.updateSettings(
+      decodedToken.userId,
+      params.key,
+      body
+    );
+  }
+
+  @PrivateRoute()
+  @ShowRoute({ type: UserEntity })
   public async show(
     @Param() params: IdRequestParams,
     @Headers('authorization') bearerToken: string
-  ): Promise<User> {
+  ): Promise<UserEntity> {
     const decodedToken = await verifyJWT(bearerToken, this.jwtService);
 
     const user = await this.usersService.findById(params.id);

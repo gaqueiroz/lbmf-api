@@ -13,33 +13,33 @@ export class UserSetting extends BaseModel {
   @Column({ length: 20 })
   Language: string;
 
-  @Column()
+  @Column({ description: 'Perfil privado' })
   ProfilePrivacy: boolean;
 
-  @Column()
+  @Column({ description: 'Privacidade de comentários' })
   CommentsPrivacy: boolean;
 
-  @Column()
+  @Column({ description: 'Privavidade de menções' })
   MentionsPrivacy: boolean;
 
-  @Column()
+  @Column({ description: 'Privavidade de Temps' })
   TempsPrivacy: boolean;
 
-  @Column()
+  @Column({ description: 'Privavidade de mensagens' })
   MessagesPrivacy: boolean;
 
-  @Column()
+  @Column({ description: 'Privacidade de geolocalização' })
   GeolocationPrivacy: boolean;
 
-  @Column()
+  @Column({ description: 'Geolicalização' })
   GeolocationRadius: string;
 
-  @Column()
+  @Column({ description: 'Privacidade de comentários' })
   CommentsNotification: boolean;
 
-  @Column()
+  @Column({ description: 'Privacidade de likes' })
   LikesNotification: boolean;
 
-  @Column()
+  @Column({ description: 'Privacidade de mensafgens' })
   MessagesNotification: boolean;
 }
