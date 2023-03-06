@@ -158,9 +158,7 @@ export class AuthService {
         });
       }
 
-      console.log('before creation...');
       createdUser = await this.usersService.create(data.user);
-      console.log('after creation...');
 
       await this.sendAccountCreationMessages(createdUser);
 

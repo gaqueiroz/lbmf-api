@@ -45,7 +45,7 @@ export class User extends BaseModel {
   @Column({ description: 'Bio', length: 400, nullable: true })
   Bio?: string;
 
-  @Column({ description: 'URL de foto de perfil', length: 50, nullable: true })
+  @Column({ description: 'URL de foto de perfil', length: 255, nullable: true })
   ImageUrl?: string;
 
   @Column({

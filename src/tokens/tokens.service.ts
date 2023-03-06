@@ -24,7 +24,10 @@ export class TokensService {
   ) {}
 
   private async findById(id: number): Promise<Token> {
-    return await this.tokenRepository.findOneBy({ Id: id });
+    return await this.tokenRepository.findOne({
+      where: { Id: id },
+      relations: ['user'],
+    });
   }
 
   public async save({ userId }: TokenRequestDTO): Promise<Token> {
